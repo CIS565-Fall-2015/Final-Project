@@ -124,13 +124,70 @@ Browse these for ideas galore!
 
 ## Timeline
 
-TODO:
-* Pitch – like funding a startup, responding to a grant, convincing your boss
-* Presentations – different than demos in class in that you can prepare better for them
-* Focus on code the whole time
+### **Tuesday 11/10** - Project Pitch
+
+Sign up for a time slot ASAP.
+
+Your project pitch is a 15 minute meeting with Patrick and Kai and a write-up no longer than one page that includes an overview of your approach with specific goals.  First, focus on why there is a need for your project.  Then describe what exactly you are going to do.  In addition to your write-up, provide supplemental figures, images, or videos.
+
+Think of your pitch as if you are trying to get a startup funded, convince your company to start a new project, or responding to a grant.
+
+**Before the meeting**:
+* Email your one page pitch and any supplemental material to Patrick and Kai by end of Monday 11/09.
+
+**After the meeting**:
+* Push your pitch to a new GitHub repo for your project
+* Email the repo link to  cis-565-fall-2015@googlegroups.com 
+
+### **Monday 11/16** - Project Overview Presentation
+
+Your first presentation should be 7-10 minutes long.  Present your work-in-progress after one week of research, design, and development.  Your presentation can include a few slides, videos, screenshots, and demos if possible.  Be sure to
+* Demonstrate working code (videos and screenshots are OK; it doesn’t have to be live).
+* Provide a roadmap with three milestones (11/23, 11/30, and 12/07), and the final result (12/11).  Set goals for each.
+
+Present as a team.  For a great example, see http://www.youtube.com/watch?v=OTCuYzAw31Y
+
+After class, push your presentation to your GitHub repo
+
+### **Monday 11/23** - Milestone 1
+
+A 5-7 minute presentation on your progress over the past week.  Demonstrate how you reached or exceeded the goals for this milestone.  If you didn't reach them, explain why.
+
+Push your slide to your GitHub repo by end of Monday 11/23.
+
+### **Monday 11/30** - Milestone 2
+
+Same format as Milestone 1.
+
+### **Monday 12/07** - Milestone 3
+
+Same format as Milestone 1.
+
+### **Friday 12/11** - Final Presentation
+
+10-minute final presentation and demo.
+
+By midnight Thursday 12/10
+* Push the following to GitHub
+   * Final presentation slides
+   * Final code - should be clean, documented, and tested.
+* A detailed README.md including:
+   * Name of your project
+   * Your names and links to your website/LinkedIn/twitter/whatever
+   * Choice screenshots including debug views
+   * Link to demo if possible.  WebGL demos should include your names and a link back to your github repo.
+   * Overview of technique and links to references
+   * Link to video
+      * Two to four minutes in length to show off your work.  You can do a voiceover; play music and use descriptive text; or a combination of both.  Your video should complement your paper and clarify anything that is difficult to describe in just words and images.  Your video should both make us excited about your work and help us if we were to implement it.
+   * Detailed performance analysis
+   * Install and build instructions
 
 ## Grading
 
 This is worth 50% of your final grade.  The breakdown is:
 
-* TODO
+* Project Overview Presentation: 10%
+* Milestone 1: 20%
+* Milestone 2: 20%
+* Milestone 3: 20%
+* Final Presentation: 30%
