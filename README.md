@@ -6,13 +6,13 @@ University of Pennsylvania
 
 The final project gives you an opportunity to embark on a large GPU programming endeavor of your choice.  You are free to select an area in graphics, GPU computing, or both.  You can reproduce the results of recent research, add a novel extension to existing work, fulfill a real need in the community, or implement something completely original.
 
-Expect this to be 2-3x more work than the hardest project this semester.  The best projects will require a time commitment of at least 100 hours per student.
+Expect this to be 2-3x more work than the hardest project this semester.  The best projects will require a time commitment of at least 100 hours per student.  It will be worth it.
 
 ## Guidelines
 
-* Form teams of two.  Each member of a team will receive the same grade.  Teams of one or three will be considered in extreme cases.  Teams of three will be expected to build something truly amazing like [this](https://github.com/ishaan13/PhotonMapper).
-* Use github.  We encourage, but do not require, you to develop in a public repo as open source.
-* Language, APIs, and target platform are up to you.
+* Form teams of two.  Each member of a team will receive the same grade.  Teams of one or three will be considered.  Teams of three will be expected to build something truly amazing like [this](https://github.com/ishaan13/PhotonMapper).
+* Use GitHub.  We encourage, but do not require, you to develop in a public repo as open source.
+* Programming language, graphics and compute APIs, and target platforms are up to you.
 * You are allowed to use existing code and libraries.  These should be prominently credited and your code should be easily identifiable.
 
 ## Project Ideas
@@ -22,14 +22,22 @@ Expect this to be 2-3x more work than the hardest project this semester.  The be
 Use CUDA or compute shaders to build a custom rendering pipeline, e.g., instead of creating a rasterization pipeline for triangles, create a graphics pipeline optimizations for [points](http://graphics.ucsd.edu/~matthias/Papers/Surfels.pdf), [voxels](https://research.nvidia.com/publication/voxelpipe-programmable-pipeline-3d-voxelization), or [vectors](http://w3.impa.br/~diego/projects/GanEtAl14/).
 
 [![](images/points.png)](http://graphics.ucsd.edu/~matthias/Papers/Surfels.pdf)
+
+Surfels: Surface Elements as Rendering Primitives by Hanspeter Pfister et al.
+
 [![](images/voxels.png)](https://research.nvidia.com/publication/voxelpipe-programmable-pipeline-3d-voxelization)
+
+VoxelPipe: A Programmable Pipeline for 3D Voxelization by Jacopo Pantaleoni.
+
 [![](images/vectors.png)](http://w3.impa.br/~diego/projects/GanEtAl14/)
+
+Massively-Parallel Vector Graphics by Francisco Ganacim.
 
 ### High-Quality Server-Side Rendering
 
 Use WebGL on the client with perhaps low-resolution geometry and optimized shaders to view a scene.  When the camera stops moving, render a high-quality image server-side using a GPU path tracer (from our course) or Photon mapper.
 
-![](image/path-tracer.png)
+![](images/path-tracer.png)
 
 Image by [Zakiuddin Shehzan Mohammed](http://www.colorseffectscode.com/Projects/FinalProject.html).
 
@@ -44,7 +52,7 @@ In general, where is the client/server split?
 
 Image from http://shield.nvidia.com/
 
-### Massive terrain AO or shadows
+### Massive Terrain AO or Shadows
 
 Terrain AO can be precomputed in a massively parallel fashion: each vertex in parallel, each ray in parallel, consider local area only, etc.
 
@@ -54,7 +62,7 @@ Terrain shadows can be implemented with [Horizon Mapping](http://research.micros
 
 ### glTF
 
-glTF, the GL Transmission Format (glTF), is a new runtime asset delivery format for WebGL.  It needs an ecosystem of tools, documentation, and extension.  Consider implementing a minimal WebGL renderer for glTF assets or doing deep size/performance analysis of glTF compared to other 3D model formats.  See [these ideas](https://github.com/KhronosGroup/glTF/issues/456).
+glTF, the GL Transmission Format (glTF), is a new runtime asset delivery format for WebGL.  It needs an ecosystem of tools, documentation, and extensions.  Consider implementing a minimal WebGL renderer for glTF assets or doing deep size/performance analysis of glTF compared to other 3D model formats.  See [these ideas](https://github.com/KhronosGroup/glTF/issues/456).
 
 Disclosure: I am one of the glTF spec editors.
 
@@ -66,7 +74,7 @@ WebGL 2 will bring many great features: uniform buffers, transform feedback, ins
 
 ### WebGL vs. OpenGL ES Mobile Power Usage
 
-On mobile, how does the power usage of JavaScript/WebGL compare to C++/OpenGL ES 2 (or Java/ES or Objective C/ES)?  For example, if the same app is coded in WebGL and OpenGL ES, which one drains the battery first - and why?  What type of benchmarks need to be developed, e.g., CPU bound, GPU compute bound, GPU memory bound, etc.
+On mobile, how does the power usage of JavaScript/WebGL compare to C++/OpenGL ES 2 (or Java/ES or Objective C/ES)?  For example, if the same app is developed in WebGL and OpenGL ES, which one drains the battery first - and why?  What type of benchmarks need to be developed, e.g., CPU bound, GPU compute bound, GPU memory bound, etc.?
 
 ### WebGL for Graphics Education
 
@@ -78,7 +86,7 @@ How can we profile shaders? Develop a tool to mouse over a pixel and see the fra
 
 ### Previous Semesters
 
-For inspiration, browse all the projects: [Fall 2014](http://cis565-fall-2014.github.io/studentwork.html), [Fall 2013](http://cis565-fall-2013.github.io/studentwork.html), [Fall 2012](http://cis565-fall-2012.github.io/studentwork.html), [Spring 2012](http://cis565-spring-2012.github.com/studentwork.html), and [Spring 2011](http://www.seas.upenn.edu/~cis565/StudentWork-2011S.htm).
+For inspiration, browse all the CIS 565 final projects from previous semesters: [Fall 2014](http://cis565-fall-2014.github.io/studentwork.html), [Fall 2013](http://cis565-fall-2013.github.io/studentwork.html), [Fall 2012](http://cis565-fall-2012.github.io/studentwork.html), [Spring 2012](http://cis565-spring-2012.github.com/studentwork.html), and [Spring 2011](http://www.seas.upenn.edu/~cis565/StudentWork-2011S.htm).
 
 #### Selected Projects
 
@@ -109,8 +117,8 @@ For inspiration, browse all the projects: [Fall 2014](http://cis565-fall-2014.gi
 Browse these for ideas galore!
 
 * [Journal of Computer Graphics Techniques](http://jcgt.org/read.html)
-* [Advances in Real-Time Rendering](http://advances.realtimerendering.com/) SIGGRAPH course
-* [Ke-Sen Huang's conference pages](http://kesen.realtimerendering.com/) - papers from SIGGRAPH, Eurographics, I3D, and other conferences
+* [Advances in Real-Time Rendering](http://advances.realtimerendering.com/) SIGGRAPH courses
+* [Ke-Sen Huang's conference pages](http://kesen.realtimerendering.com/) - papers from SIGGRAPH, Eurographics, I3D, and elsewhere
 * [Real-Time Rendering Portal](http://www.realtimerendering.com/portal.html) - links to an amazing amount of content
 * Books (will bring them into class): GPU Pro series, WebGL Insights, OpenGL Insights, Real-Time Rendering
 
