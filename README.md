@@ -10,7 +10,7 @@ Expect this to be 2-3x more work than the hardest project this semester.  The be
 
 ## Guidelines
 
-* Form teams of two.  Each member of a team will receive the same grade.  Teams of one or three will be considered.  Teams of three will be expected to build something truly amazing like [this](https://github.com/ishaan13/PhotonMapper).
+* Form teams of two.  Each team member will receive the same grade.  Teams of one or three will be considered.  Teams of three will be expected to build something truly amazing like [this](https://github.com/ishaan13/PhotonMapper).
 * Use GitHub.  We encourage, but do not require, you to develop in a public repo as open source.
 * Programming language, graphics and compute APIs, and target platforms are up to you.
 * You are allowed to use existing code and libraries.  These should be prominently credited and your code should be easily identifiable.
@@ -19,7 +19,7 @@ Expect this to be 2-3x more work than the hardest project this semester.  The be
 
 ### Alternative Rendering Pipelines
 
-Use CUDA or compute shaders to build a custom rendering pipeline, e.g., instead of creating a rasterization pipeline for triangles, create a graphics pipeline optimizations for [points](http://graphics.ucsd.edu/~matthias/Papers/Surfels.pdf), [voxels](https://research.nvidia.com/publication/voxelpipe-programmable-pipeline-3d-voxelization), or [vectors](http://w3.impa.br/~diego/projects/GanEtAl14/).
+Use CUDA or compute shaders to build a custom or hybrid rendering pipeline, e.g., instead of creating a rasterization pipeline for triangles, create a graphics pipeline optimizations for [points](http://graphics.ucsd.edu/~matthias/Papers/Surfels.pdf), [voxels](https://research.nvidia.com/publication/voxelpipe-programmable-pipeline-3d-voxelization), or [vectors](http://w3.impa.br/~diego/projects/GanEtAl14/).
 
 [![](images/points.png)](http://graphics.ucsd.edu/~matthias/Papers/Surfels.pdf)
 
@@ -62,7 +62,7 @@ Terrain shadows can be implemented with [Horizon Mapping](http://research.micros
 
 ### glTF
 
-glTF, the GL Transmission Format (glTF), is a new runtime asset delivery format for WebGL.  It needs an ecosystem of tools, documentation, and extensions.  Consider implementing a minimal WebGL renderer for glTF assets or doing deep size/performance analysis of glTF compared to other 3D model formats.  See [these ideas](https://github.com/KhronosGroup/glTF/issues/456).
+glTF, the GL Transmission Format (glTF), is a new runtime asset delivery format for WebGL.  It needs an ecosystem of tools, documentation, and extensions.  Consider implementing a minimal WebGL renderer for glTF assets or doing a detailed size/performance analysis of glTF compared to other 3D model formats.  See [these ideas](https://github.com/KhronosGroup/glTF/issues/456).
 
 Disclosure: I am one of the glTF spec editors.
 
@@ -86,7 +86,7 @@ How can we profile shaders? Develop a tool to mouse over a pixel and see the fra
 
 ### Previous Semesters
 
-For inspiration, browse all the CIS 565 final projects from previous semesters: [Fall 2014](http://cis565-fall-2014.github.io/studentwork.html), [Fall 2013](http://cis565-fall-2013.github.io/studentwork.html), [Fall 2012](http://cis565-fall-2012.github.io/studentwork.html), [Spring 2012](http://cis565-spring-2012.github.com/studentwork.html), and [Spring 2011](http://www.seas.upenn.edu/~cis565/StudentWork-2011S.htm).
+For inspiration, browse the CIS 565 final projects from previous semesters: [Fall 2014](http://cis565-fall-2014.github.io/studentwork.html), [Fall 2013](http://cis565-fall-2013.github.io/studentwork.html), [Fall 2012](http://cis565-fall-2012.github.io/studentwork.html), [Spring 2012](http://cis565-spring-2012.github.com/studentwork.html), and [Spring 2011](http://www.seas.upenn.edu/~cis565/StudentWork-2011S.htm).
 
 #### Selected Projects
 
@@ -128,7 +128,7 @@ Browse these for ideas galore!
 
 Sign up for a time slot ASAP.
 
-Your project pitch is a 15 minute meeting with Patrick and Kai and a write-up no longer than one page that includes an overview of your approach with specific goals.  First, focus on why there is a need for your project.  Then describe what exactly you are going to do.  In addition to your write-up, provide supplemental figures, images, or videos.
+Your project pitch is a 15-minute meeting with Patrick and Kai and a write-up no longer than one page that includes an overview of your approach with specific goals.  First, focus on why there is a need for your project.  Then describe what exactly you are going to do.  In addition to your write-up, provide supplemental figures, images, or videos.
 
 Think of your pitch as if you are trying to get a startup funded, convince your company to start a new project, or responding to a grant.
 
@@ -167,7 +167,7 @@ Same format as Milestone 1.
 
 10-minute final presentation and demo.
 
-By midnight Thursday 12/10
+By midnight Thursday 12/10:
 * Push the following to GitHub
    * Final presentation slides
    * Final code - should be clean, documented, and tested.
@@ -178,13 +178,13 @@ By midnight Thursday 12/10
    * Link to demo if possible.  WebGL demos should include your names and a link back to your github repo.
    * Overview of technique and links to references
    * Link to video
-      * Two to four minutes in length to show off your work.  You can do a voiceover; play music and use descriptive text; or a combination of both.  Your video should complement your paper and clarify anything that is difficult to describe in just words and images.  Your video should both make us excited about your work and help us if we were to implement it.
+      * Two to four minutes in length to show off your work.  Your video should complement your paper and clarify anything that is difficult to describe in just words and images.  Your video should both make us excited about your work and help us if we were to implement it.
    * Detailed performance analysis
    * Install and build instructions
 
 ## Grading
 
-This is worth 50% of your final grade.  The breakdown is:
+The final project is worth 50% of your final grade.  The breakdown is:
 
 * Project Overview Presentation: 10%
 * Milestone 1: 20%
