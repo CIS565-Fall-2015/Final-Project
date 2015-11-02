@@ -141,6 +141,8 @@ Think of your pitch as if you are trying to get a startup funded, convince your 
 
 ### **Monday 11/16** - Project Overview Presentation
 
+**In class after the guest lecture**
+
 Your first presentation should be 7-10 minutes long.  Present your work-in-progress after one week of research, design, and development.  Your presentation can include a few slides, videos, screenshots, and demos if possible.  Be sure to
 * Demonstrate working code (videos and screenshots are OK; it doesn’t have to be live).
 * Provide a roadmap with three milestones (11/23, 11/30, and 12/07), and the final result (12/11).  Set goals for each.
@@ -151,19 +153,27 @@ After class, push your presentation to your GitHub repo
 
 ### **Monday 11/23** - Milestone 1
 
+**In class after the guest lecture**
+
 A 5-7 minute presentation on your progress over the past week.  Demonstrate how you reached or exceeded the goals for this milestone.  If you didn't reach them, explain why.
 
 Push your slide to your GitHub repo by end of Monday 11/23.
 
 ### **Monday 11/30** - Milestone 2
 
+**In class after the guest lecture**
+
 Same format as Milestone 1.
 
 ### **Monday 12/07** - Milestone 3
 
+**In class after the guest lecture**
+
 Same format as Milestone 1.
 
 ### **Friday 12/11** - Final Presentation
+
+**5pm, Moore 212**
 
 10-minute final presentation and demo.
 
