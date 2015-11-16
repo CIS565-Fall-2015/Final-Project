@@ -56,7 +56,7 @@ Image from http://shield.nvidia.com/
 
 Terrain AO can be precomputed in a massively parallel fashion: each vertex in parallel, each ray in parallel, consider local area only, etc.
 
-Terrain shadows can be implemented with [Horizon Mapping](http://research.microsoft.com/en-us/um/people/cohen/bs.pdf).  The horizon map for each point can be precomputed in parallel.
+Terrain shadows can be implemented with [Horizon Mapping](https://web.archive.org/web/20150915130939/http://research.microsoft.com/en-us/um/people/cohen/bs.pdf).  The horizon map for each point can be precomputed in parallel.
 
 ![](images/terrain.png)
 
