@@ -1,0 +1,4 @@
+C:/Users/Zhimin/Desktop/Final Project/build/src/CMakeFiles/src.dir
+C:/Users/Zhimin/Desktop/Final Project/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/Zhimin/Desktop/Final Project/build/CMakeFiles/cis565_nbody.dir
+C:/Users/Zhimin/Desktop/Final Project/build/CMakeFiles/ZERO_CHECK.dir
