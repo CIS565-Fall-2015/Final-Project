@@ -1,0 +1,4 @@
+# CMake generation dependency list for this directory.
+C:/Users/Zhimin/Desktop/Final Project/src/CMakeLists.txt
+C:/Users/Zhimin/Desktop/Final Project/build/src/CMakeFiles/src.dir/src_generated_kernel.cu.obj.depend
+C:/Users/Zhimin/Desktop/Final Project/cmake/FindCUDA/run_nvcc.cmake
