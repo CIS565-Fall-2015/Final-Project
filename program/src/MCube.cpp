@@ -1,9 +1,14 @@
 #include "MCube.h"
 
-void MCube(std::vector<vec3> particlePosList)
+void MCube(float *height, int width, int length)
 {
 	string objName;
 	std::stringstream strout;
+	std::vector<glm::vec3> particlePosList;
+	
+	for (int i = 0; i < width; i++)
+		for (int j = 0; j < length; j++)
+			particlePosList.push_back(glm::vec3(i, j, height[i*length + j]));
 
 	strout << "terrain_" << frameNumber << ".obj";
 	strout >> objName;
@@ -15,7 +20,7 @@ void MCube(std::vector<vec3> particlePosList)
 }
 
 
-void computeVertexValue(string objName, std::vector<vec3> particlePosList)
+void computeVertexValue(string objName, std::vector<glm::vec3> particlePosList)
 {
 	int particleCount = particlePosList.size();
 	double maxXPos;
@@ -27,7 +32,7 @@ void computeVertexValue(string objName, std::vector<vec3> particlePosList)
 
 	for (int i = 0; i < particleCount; i++)
 	{
-		vec3 particlePos = particlePosList[i];
+		glm::vec3 particlePos = particlePosList[i];
 		if (i == 0)
 		{
 			maxXPos = particlePos[0];
@@ -73,7 +78,7 @@ void computeVertexValue(string objName, std::vector<vec3> particlePosList)
 		largestIndex = 2;
 	}
 
-	vec3 centerPos((maxXPos + minXPos) / 2.0f, (maxYPos + minYPos) / 2.0f, (maxZPos + minZPos) / 2.0f);
+	glm::vec3 centerPos((maxXPos + minXPos) / 2.0f, (maxYPos + minYPos) / 2.0f, (maxZPos + minZPos) / 2.0f);
 	double meshSize = diff / largestRes;
 	int meshResX;
 	int meshResY;
@@ -98,7 +103,7 @@ void computeVertexValue(string objName, std::vector<vec3> particlePosList)
 	}
 
 	int verticesCount = (meshResX + 1) * (meshResY + 1) * (meshResZ + 1);
-	vec3 originPos(minXPos - maxRadius * meshSize, minYPos - maxRadius * meshSize, minZPos - maxRadius * meshSize);
+	glm::vec3 originPos(minXPos - maxRadius * meshSize, minYPos - maxRadius * meshSize, minZPos - maxRadius * meshSize);
 
 
 	double* verticesValueArray = new double[verticesCount];
@@ -111,7 +116,7 @@ void computeVertexValue(string objName, std::vector<vec3> particlePosList)
 
 	for (int i = 0; i < particleCount; i++)
 	{
-		vec3 particlePos = particlePosList[i];;
+		glm::vec3 particlePos = particlePosList[i];;
 		int vertexIndexX = (int)round((particlePos[0] - minXPos) / meshSize) + maxRadius;
 		int vertexIndexY = (int)round((particlePos[1] - minYPos) / meshSize) + maxRadius;
 		int vertexIndexZ = (int)round((particlePos[2] - minZPos) / meshSize) + maxRadius;
@@ -147,7 +152,7 @@ void computeVertexValue(string objName, std::vector<vec3> particlePosList)
 				}
 	}
 
-	std::vector<vec3> pointList;
+	std::vector<glm::vec3> pointList;
 	std::vector<vector<int>> triangleList;
 	std::vector<vector<int>> temp;
 
@@ -168,7 +173,7 @@ void computeVertexValue(string objName, std::vector<vec3> particlePosList)
 
 }
 
-void Level_Set_Method(string name, vector<vec3> pointList, vector<vector<int>> triangleList)
+void Level_Set_Method(string name, vector<glm::vec3> pointList, vector<vector<int>> triangleList)
 {
 	//Start with a massive inside out bound box////
 	Vec3f min_box(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
@@ -207,14 +212,11 @@ void Level_Set_Method(string name, vector<vec3> pointList, vector<vector<int>> t
 	//double cubicSize = totalSize/ cubicNum;
 	//double dx = pow(cubicSize, (double)(1.0f/ 3.0f));
 
-	//cout << "sizeX = " << sizeX << "  sizeY = " << sizeY << "  sizeZ = " << sizeZ << endl;
-	//cout << "dx = " << dx << endl;
 	////Add padding around the box.////
 	Vec3f unit(dx, dx, dx);
 	min_box -= (float)0.001 * unit;
 	max_box += (float)0.001 * unit;
 	Vec3ui sizes = Vec3ui((max_box - min_box) / dx) + Vec3ui(2, 2, 2);
-	//cout << "sizes[0] = " << sizes[0] << "  sizes[1] = " << sizes[1] << "  sizes[2] = " << sizes[2] << endl;
 	Array3f phi_grid;
 
 
@@ -226,10 +228,10 @@ void Level_Set_Method(string name, vector<vec3> pointList, vector<vector<int>> t
 	make_level_set3(faceList, vertList, min_box, dx, sizes[0], sizes[1], sizes[2], phi_grid);
 
 	double* verticesValueArray = new double[phi_grid.a.size()];
-	vector<vec3> marchingCubePointList;
+	vector<glm::vec3> marchingCubePointList;
 	vector<vector<int>> temp;
 	vector<vector<int>> newTriangleList;
-	vec3 originPos(min_box[0], min_box[1], min_box[2]);
+	glm::vec3 originPos(min_box[0], min_box[1], min_box[2]);
 	double meltingThickness = maxSideLength / levelSetDiatance;
 
 	for (unsigned int i = 0; i < phi_grid.a.size(); i++)
@@ -262,8 +264,8 @@ void Level_Set_Method(string name, vector<vec3> pointList, vector<vector<int>> t
 
 int marchingCube(double isolevel, int indexX, int indexY, int indexZ,
 	int meshResX, int meshResY, int meshResZ, double meshSize,
-	double* verticesValueArray, vec3 originPos,
-	vector<vec3>        *pointList,
+	double* verticesValueArray, glm::vec3 originPos,
+	vector<glm::vec3>        *pointList,
 	vector<vector<int>> *triangleList,
 	vector<vector<int>> *temp)
 {
@@ -287,14 +289,14 @@ int marchingCube(double isolevel, int indexX, int indexY, int indexZ,
 	double gridValue6 = verticesValueArray[gridValueIndex6];
 	double gridValue7 = verticesValueArray[gridValueIndex7];
 
-	vec3 gridPos0(indexX       * meshSize + originPos[0], indexY       * meshSize + originPos[1], indexZ       * meshSize + originPos[2]);
-	vec3 gridPos1((indexX + 1) * meshSize + originPos[0], indexY       * meshSize + originPos[1], indexZ       * meshSize + originPos[2]);
-	vec3 gridPos2((indexX + 1) * meshSize + originPos[0], (indexY + 1) * meshSize + originPos[1], indexZ       * meshSize + originPos[2]);
-	vec3 gridPos3(indexX       * meshSize + originPos[0], (indexY + 1) * meshSize + originPos[1], indexZ       * meshSize + originPos[2]);
-	vec3 gridPos4(indexX       * meshSize + originPos[0], indexY       * meshSize + originPos[1], (indexZ + 1) * meshSize + originPos[2]);
-	vec3 gridPos5((indexX + 1) * meshSize + originPos[0], indexY       * meshSize + originPos[1], (indexZ + 1) * meshSize + originPos[2]);
-	vec3 gridPos6((indexX + 1) * meshSize + originPos[0], (indexY + 1) * meshSize + originPos[1], (indexZ + 1) * meshSize + originPos[2]);
-	vec3 gridPos7(indexX       * meshSize + originPos[0], (indexY + 1) * meshSize + originPos[1], (indexZ + 1) * meshSize + originPos[2]);
+	glm::vec3 gridPos0(indexX       * meshSize + originPos[0], indexY       * meshSize + originPos[1], indexZ       * meshSize + originPos[2]);
+	glm::vec3 gridPos1((indexX + 1) * meshSize + originPos[0], indexY       * meshSize + originPos[1], indexZ       * meshSize + originPos[2]);
+	glm::vec3 gridPos2((indexX + 1) * meshSize + originPos[0], (indexY + 1) * meshSize + originPos[1], indexZ       * meshSize + originPos[2]);
+	glm::vec3 gridPos3(indexX       * meshSize + originPos[0], (indexY + 1) * meshSize + originPos[1], indexZ       * meshSize + originPos[2]);
+	glm::vec3 gridPos4(indexX       * meshSize + originPos[0], indexY       * meshSize + originPos[1], (indexZ + 1) * meshSize + originPos[2]);
+	glm::vec3 gridPos5((indexX + 1) * meshSize + originPos[0], indexY       * meshSize + originPos[1], (indexZ + 1) * meshSize + originPos[2]);
+	glm::vec3 gridPos6((indexX + 1) * meshSize + originPos[0], (indexY + 1) * meshSize + originPos[1], (indexZ + 1) * meshSize + originPos[2]);
+	glm::vec3 gridPos7(indexX       * meshSize + originPos[0], (indexY + 1) * meshSize + originPos[1], (indexZ + 1) * meshSize + originPos[2]);
 
 
 
@@ -623,7 +625,7 @@ int marchingCube(double isolevel, int indexX, int indexY, int indexZ,
 	{
 		if (indexY == 0 && indexZ == 0)
 		{
-			vec3 vertex = vertexInterp(isolevel, gridPos0, gridPos1, gridValue0, gridValue1);
+			glm::vec3 vertex = vertexInterp(isolevel, gridPos0, gridPos1, gridValue0, gridValue1);
 			pointList->push_back(vertex);
 			edge[0] = pointList->size();
 			pointList_eachgrid.push_back(edge[0]);
@@ -661,8 +663,8 @@ int marchingCube(double isolevel, int indexX, int indexY, int indexZ,
 	{
 		if (indexZ == 0)
 		{
-			vec3 vertex = vertexInterp(isolevel, gridPos1, gridPos2, gridValue1, gridValue2);
-			//vec3 vertex = (gridPos1 + gridPos2) / 2.0f;
+			glm::vec3 vertex = vertexInterp(isolevel, gridPos1, gridPos2, gridValue1, gridValue2);
+			//glm::vec3 vertex = (gridPos1 + gridPos2) / 2.0f;
 			pointList->push_back(vertex);
 			edge[1] = pointList->size();
 			pointList_eachgrid.push_back(edge[1]);
@@ -683,8 +685,8 @@ int marchingCube(double isolevel, int indexX, int indexY, int indexZ,
 	{
 		if (indexZ == 0)
 		{
-			vec3 vertex = vertexInterp(isolevel, gridPos2, gridPos3, gridValue2, gridValue3);
-			//vec3 vertex = (gridPos2 + gridPos3) / 2.0f;
+			glm::vec3 vertex = vertexInterp(isolevel, gridPos2, gridPos3, gridValue2, gridValue3);
+			//glm::vec3 vertex = (gridPos2 + gridPos3) / 2.0f;
 			pointList->push_back(vertex);
 			edge[2] = pointList->size();
 			pointList_eachgrid.push_back(edge[2]);
@@ -705,8 +707,8 @@ int marchingCube(double isolevel, int indexX, int indexY, int indexZ,
 	{
 		if (indexX == 0 && indexZ == 0)
 		{
-			vec3 vertex = vertexInterp(isolevel, gridPos3, gridPos0, gridValue3, gridValue0);
-			//vec3 vertex = (gridPos3 + gridPos0) / 2.0f;
+			glm::vec3 vertex = vertexInterp(isolevel, gridPos3, gridPos0, gridValue3, gridValue0);
+			//glm::vec3 vertex = (gridPos3 + gridPos0) / 2.0f;
 			pointList->push_back(vertex);
 			edge[3] = pointList->size();
 			pointList_eachgrid.push_back(edge[3]);
@@ -743,8 +745,8 @@ int marchingCube(double isolevel, int indexX, int indexY, int indexZ,
 	{
 		if (indexY == 0)
 		{
-			vec3 vertex = vertexInterp(isolevel, gridPos4, gridPos5, gridValue4, gridValue5);
-			//vec3 vertex = (gridPos4 + gridPos5) / 2.0f;
+			glm::vec3 vertex = vertexInterp(isolevel, gridPos4, gridPos5, gridValue4, gridValue5);
+			//glm::vec3 vertex = (gridPos4 + gridPos5) / 2.0f;
 			pointList->push_back(vertex);
 			edge[4] = pointList->size();
 			pointList_eachgrid.push_back(edge[4]);
@@ -763,8 +765,8 @@ int marchingCube(double isolevel, int indexX, int indexY, int indexZ,
 
 	if (edgeTable[cubeindex] & 32)//EDGE 5
 	{
-		vec3 vertex = vertexInterp(isolevel, gridPos5, gridPos6, gridValue5, gridValue6);
-		//vec3 vertex = (gridPos5 + gridPos6) / 2.0f;
+		glm::vec3 vertex = vertexInterp(isolevel, gridPos5, gridPos6, gridValue5, gridValue6);
+		//glm::vec3 vertex = (gridPos5 + gridPos6) / 2.0f;
 		pointList->push_back(vertex);
 		edge[5] = pointList->size();
 		pointList_eachgrid.push_back(edge[5]);
@@ -774,8 +776,8 @@ int marchingCube(double isolevel, int indexX, int indexY, int indexZ,
 
 	if (edgeTable[cubeindex] & 64)//EDGE 6
 	{
-		vec3 vertex = vertexInterp(isolevel, gridPos6, gridPos7, gridValue6, gridValue7);
-		//vec3 vertex = (gridPos6 + gridPos7) / 2.0f;
+		glm::vec3 vertex = vertexInterp(isolevel, gridPos6, gridPos7, gridValue6, gridValue7);
+		//glm::vec3 vertex = (gridPos6 + gridPos7) / 2.0f;
 		pointList->push_back(vertex);
 		edge[6] = pointList->size();
 		pointList_eachgrid.push_back(edge[6]);
@@ -787,8 +789,8 @@ int marchingCube(double isolevel, int indexX, int indexY, int indexZ,
 	{
 		if (indexX == 0)
 		{
-			vec3 vertex = vertexInterp(isolevel, gridPos7, gridPos4, gridValue7, gridValue4);
-			//vec3 vertex = (gridPos7 + gridPos4) / 2.0f;
+			glm::vec3 vertex = vertexInterp(isolevel, gridPos7, gridPos4, gridValue7, gridValue4);
+			//glm::vec3 vertex = (gridPos7 + gridPos4) / 2.0f;
 			pointList->push_back(vertex);
 			edge[7] = pointList->size();
 			pointList_eachgrid.push_back(edge[7]);
@@ -809,8 +811,8 @@ int marchingCube(double isolevel, int indexX, int indexY, int indexZ,
 	{
 		if (indexX == 0 && indexY == 0)
 		{
-			vec3 vertex = vertexInterp(isolevel, gridPos0, gridPos4, gridValue0, gridValue4);
-			//vec3 vertex = (gridPos0 + gridPos4) / 2.0f;
+			glm::vec3 vertex = vertexInterp(isolevel, gridPos0, gridPos4, gridValue0, gridValue4);
+			//glm::vec3 vertex = (gridPos0 + gridPos4) / 2.0f;
 			pointList->push_back(vertex);
 			edge[8] = pointList->size();
 			pointList_eachgrid.push_back(edge[8]);
@@ -847,8 +849,8 @@ int marchingCube(double isolevel, int indexX, int indexY, int indexZ,
 	{
 		if (indexY == 0)
 		{
-			vec3 vertex = vertexInterp(isolevel, gridPos1, gridPos5, gridValue1, gridValue5);
-			//vec3 vertex = (gridPos1 + gridPos5) / 2.0f;
+			glm::vec3 vertex = vertexInterp(isolevel, gridPos1, gridPos5, gridValue1, gridValue5);
+			//glm::vec3 vertex = (gridPos1 + gridPos5) / 2.0f;
 			pointList->push_back(vertex);
 			edge[9] = pointList->size();
 			pointList_eachgrid.push_back(edge[9]);
@@ -867,8 +869,8 @@ int marchingCube(double isolevel, int indexX, int indexY, int indexZ,
 
 	if (edgeTable[cubeindex] & 1024)//EDGE 10
 	{
-		vec3 vertex = vertexInterp(isolevel, gridPos2, gridPos6, gridValue2, gridValue6);
-		//vec3 vertex = (gridPos2 + gridPos6) / 2.0f;
+		glm::vec3 vertex = vertexInterp(isolevel, gridPos2, gridPos6, gridValue2, gridValue6);
+		//glm::vec3 vertex = (gridPos2 + gridPos6) / 2.0f;
 		pointList->push_back(vertex);
 		edge[10] = pointList->size();
 		pointList_eachgrid.push_back(edge[10]);
@@ -880,8 +882,8 @@ int marchingCube(double isolevel, int indexX, int indexY, int indexZ,
 	{
 		if (indexX == 0)
 		{
-			vec3 vertex = vertexInterp(isolevel, gridPos3, gridPos7, gridValue3, gridValue7);
-			//vec3 vertex = (gridPos3 + gridPos7) / 2.0f;
+			glm::vec3 vertex = vertexInterp(isolevel, gridPos3, gridPos7, gridValue3, gridValue7);
+			//glm::vec3 vertex = (gridPos3 + gridPos7) / 2.0f;
 			pointList->push_back(vertex);
 			edge[11] = pointList->size();
 			pointList_eachgrid.push_back(edge[11]);
@@ -918,9 +920,9 @@ int marchingCube(double isolevel, int indexX, int indexY, int indexZ,
 }
 
 
-vec3 vertexInterp(double isolevel, vec3 p1, vec3 p2, double valueP1, double valueP2)
+glm::vec3 vertexInterp(double isolevel, glm::vec3 p1, glm::vec3 p2, double valueP1, double valueP2)
 {
-	vec3 interPt;
+	glm::vec3 interPt;
 
 	double mu;
 
@@ -939,7 +941,7 @@ vec3 vertexInterp(double isolevel, vec3 p1, vec3 p2, double valueP1, double valu
 
 }
 
-void createObjFile(string name, vector<vec3> pointList, vector<vector<int>> triangleList)
+void createObjFile(string name, vector<glm::vec3> pointList, vector<vector<int>> triangleList)
 {
 	string filepath = objStorePath;
 	filepath += name;

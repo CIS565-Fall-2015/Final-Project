@@ -36,35 +36,38 @@ void checkCUDAError(const char *msg, int line = -1) {
 //
 //    cudaThreadSynchronize();
 //}
-__global__ void HeightMapping(thrust::device_vector<glm::vec3> &height, unsigned int numPixels)
+__global__ void HeightMapping(float *height, unsigned int numPixels)
 {
-	unsigned int j = blockIdx.x, i = threadIdx.x;
-	unsigned int index = blockIdx.x * blockDim.x + threadIdx.x;
+	unsigned int i = blockIdx.x, j = threadIdx.x;
+	unsigned int index = i * blockDim.x + j;
 
 	int octaves_ = octaves, seed_ = seed;
 	float amp_ = amplitude, freq_ = frequency;
 
-	if (index < numPixels)
+	if (index < numPixels){
+		height[index] = 0;
 		for (int iter = 0; iter < order && octaves_ > 0; iter++){
 			octaves_--; amp_ /= 2; freq_ *= 2; seed_++;
 			Perlin perl(octaves_, amp_, freq_, seed_);
-			height[index] += glm::vec3(i, j, perl.Get(i, j));
+			height[index] += perl.Get(i, j);
 		}
+	}
 }
 
-void MapGen(vector<glm::vec3> &hst_height, unsigned int numPixels) {
-	float time(0);
+void MapGen(float *hst_height, unsigned int numPixels) {
+	float time;
 	cudaEvent_t start, stop;
 	cudaEventCreate(&start);
 	cudaEventCreate(&stop);
 	cudaEventRecord(start);
 
-	thrust::device_vector<glm::vec3> dev_height(numPixels, glm::vec3(0));
+	float *dev_height;
 	dim3 threadsPerBlock(blockSize);
 	dim3 fullBlocksPerGrid((int)ceil(float(numPixels) / blockSize));
 
+	cudaMalloc((void**)&dev_height, numPixels*sizeof(float));
 	HeightMapping << <threadsPerBlock, fullBlocksPerGrid >> >(dev_height, numPixels);
-	thrust::copy(hst_height.begin(), hst_height.end(), dev_height.begin());
+	cudaMemcpy(hst_height, dev_height, numPixels*sizeof(float), cudaMemcpyDeviceToHost);
 	
 	cudaEventRecord(stop);	
 	cudaEventSynchronize(stop);

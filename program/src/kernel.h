@@ -7,8 +7,6 @@
 #include <thrust/random.h>
 #include <cuda_runtime.h>
 #include <cuda_runtime_api.h>
-#include <thrust/host_vector.h>
-#include <thrust/device_vector.h>
 #include "utilityCore.hpp"
 #include "perlin.h"
 
@@ -22,4 +20,4 @@
 
 using namespace std;
 
-void MapGen(vector<glm::vec3> &height, unsigned int numPixels);
+void MapGen(float *height, unsigned int numPixels);

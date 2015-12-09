@@ -209,11 +209,11 @@ void runCUDA() {
 
 	// Initialize N-body simulation
 	N_FOR_VIS = width*height;
-	vector<glm::vec3> hst_height(N_FOR_VIS);
+	float *hst_height = new float[N_FOR_VIS];
 
     // execute the kernel
 	MapGen(hst_height, N_FOR_VIS);
-	MCube(hst_height);
+	MCube(hst_height, width, height);
 
 #if VISUALIZE
     //Terrain::copyPlanetsToVBO(dptrvert);

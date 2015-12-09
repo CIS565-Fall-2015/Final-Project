@@ -1,4 +1,5 @@
 #pragma once
+#define _CRT_SECURE_NO_WARNINGS
 
 #include <iostream>
 #include <cstdlib>
@@ -18,9 +19,9 @@
 #include "glslUtility.hpp"
 #include "kernel.h"
 #include "MCube.h" 
+#include "scene.h"
 //#include "sceneStructs.h"
 //#include "image.h"
-#include "scene.h"
 
 //====================================
 // GL Stuff
