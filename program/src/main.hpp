@@ -17,6 +17,7 @@
 #include "utilityCore.hpp"
 #include "glslUtility.hpp"
 #include "kernel.h"
+#include "MCube.h" 
 //#include "sceneStructs.h"
 //#include "image.h"
 #include "scene.h"

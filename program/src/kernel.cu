@@ -28,9 +28,6 @@ void checkCUDAError(const char *msg, int line = -1) {
 //    }
 //}
 
-///**
-// * Wrapper for call to the kernCopyPlanetsToVBO CUDA kernel.
-// */
 //void Terrain::copyPlanetsToVBO(float *vbodptr) {
 //	dim3 fullBlocksPerGrid((int)ceil(float(numMap) / float(blockSize)));
 //
@@ -39,48 +36,39 @@ void checkCUDAError(const char *msg, int line = -1) {
 //
 //    cudaThreadSynchronize();
 //}
-
-dim3 threadsPerBlock(blockSize);
-
-__global__ void HeightMap(float *height, int pixels)
+__global__ void HeightMapping(thrust::device_vector<glm::vec3> &height, unsigned int numPixels)
 {
+	unsigned int j = blockIdx.x, i = threadIdx.x;
+	unsigned int index = blockIdx.x * blockDim.x + threadIdx.x;
+
 	int octaves_ = octaves, seed_ = seed;
 	float amp_ = amplitude, freq_ = frequency;
-	int index = (blockIdx.x * blockDim.x) + threadIdx.x;
 
-	if (index < pixels)
-		for (int i = 0; i < order; i++){
-		octaves_++; amp_ /= 2; freq_ *= 2; seed_++;
-		Perlin perl(octaves_, amp_, freq_, seed_);
-		height[index] += perl.Get(blockIdx.x, threadIdx.x);
+	if (index < numPixels)
+		for (int iter = 0; iter < order && octaves_ > 0; iter++){
+			octaves_--; amp_ /= 2; freq_ *= 2; seed_++;
+			Perlin perl(octaves_, amp_, freq_, seed_);
+			height[index] += glm::vec3(i, j, perl.Get(i, j));
 		}
 }
 
-void Terrain::MapGen(float* hst_height, unsigned int size, float *time) {
+void MapGen(vector<glm::vec3> &hst_height, unsigned int numPixels) {
+	float time(0);
 	cudaEvent_t start, stop;
 	cudaEventCreate(&start);
 	cudaEventCreate(&stop);
 	cudaEventRecord(start);
 
-	float *dev_height;
-	unsigned int numPixels = size;
+	thrust::device_vector<glm::vec3> dev_height(numPixels, glm::vec3(0));
+	dim3 threadsPerBlock(blockSize);
 	dim3 fullBlocksPerGrid((int)ceil(float(numPixels) / blockSize));
-		
-	cudaMalloc((void**)&dev_height, sizeof(hst_height));
-	checkCUDAErrorWithLine("cudaMalloc dev_height failed!");
 
-	cudaMemcpy(hst_height, dev_height, sizeof(hst_height), cudaMemcpyHostToDevice);
-	checkCUDAErrorWithLine("cudaMemcpy hst_height failed!");
-
-	HeightMap << <threadsPerBlock, fullBlocksPerGrid >> >(dev_height, numPixels);
-
-	cudaMemcpy(hst_height, dev_height, sizeof(hst_height), cudaMemcpyDeviceToHost);
-	checkCUDAErrorWithLine("cudaMemcpy dev_height failed!");
-
-	cudaFree(dev_height);
-		
+	HeightMapping << <threadsPerBlock, fullBlocksPerGrid >> >(dev_height, numPixels);
+	thrust::copy(hst_height.begin(), hst_height.end(), dev_height.begin());
+	
 	cudaEventRecord(stop);	
 	cudaEventSynchronize(stop);
-	cudaEventElapsedTime(time, start, stop);
-	std::cout << *time << std::endl;
+	cudaEventElapsedTime(&time, start, stop);
+
+	cout << time << endl;
 }

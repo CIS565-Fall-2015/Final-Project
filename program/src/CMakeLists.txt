@@ -1,5 +1,8 @@
 set(SOURCE_FILES
+    "AABB.h"
+    "AABB.cpp"
     "cudaMat4.hpp"
+	"sceneStructs.h"
     "glslUtility.hpp"
     "glslUtility.cpp"
     "utilityCore.hpp"
@@ -8,6 +11,20 @@ set(SOURCE_FILES
     "perlin.cu"
     "kernel.h"
     "kernel.cu"
+	"image.cpp"
+	"image.h"
+	"interactions.h"
+	"intersections.h"
+	"makelevelset3.cpp"
+	"makelevelset3.h"
+	"MCube.cpp"
+	"MCube.h"
+	"mesh.cpp"
+	"mesh.h"
+	"preview.cpp"
+	"preview.h"
+	"scene.cpp"
+	"scene.h"
     )
 
 cuda_add_library(src

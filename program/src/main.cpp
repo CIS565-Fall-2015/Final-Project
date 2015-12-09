@@ -14,11 +14,9 @@
 
 #define VISUALIZE 1
 
-float run_time = 0;
 unsigned int width = 128;
 unsigned int height = 72;
-static unsigned int N_FOR_VIS;
-float *hst_height;
+unsigned int N_FOR_VIS;
 
 /**
  * C main function.
@@ -191,7 +189,6 @@ void runCUDA() {
     // Map OpenGL buffer object for writing from CUDA on a single GPU
     // No data is moved (Win & Linux). When mapped to CUDA, OpenGL should not
     // use this buffer
-
 	if (camchanged) {
 		Camera &cam = renderState->camera;
 		glm::vec3 v = cam.view;
@@ -212,11 +209,12 @@ void runCUDA() {
 
 	// Initialize N-body simulation
 	N_FOR_VIS = width*height;
-	hst_height = new float[N_FOR_VIS];
-	memset(hst_height, 0, N_FOR_VIS*sizeof(int));
+	vector<glm::vec3> hst_height(N_FOR_VIS);
 
     // execute the kernel
-	Terrain::MapGen(hst_height, N_FOR_VIS, &run_time);
+	MapGen(hst_height, N_FOR_VIS);
+	MCube(hst_height);
+
 #if VISUALIZE
     //Terrain::copyPlanetsToVBO(dptrvert);
 #endif
@@ -241,7 +239,7 @@ void mainLoop() {
             frame = 0;
         }
 
-		runCUDA();
+		//runCUDA();
 
         std::ostringstream ss;
         ss << "[";
