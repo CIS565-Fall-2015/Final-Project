@@ -36,6 +36,7 @@ void checkCUDAError(const char *msg, int line = -1) {
 //
 //    cudaThreadSynchronize();
 //}
+
 __global__ void HeightMapping(float *height, unsigned int numPixels)
 {
 	unsigned int i = blockIdx.x, j = threadIdx.x;
