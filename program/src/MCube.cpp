@@ -19,7 +19,6 @@ void MCube(float *height, int width, int length)
 	frameNumber++;
 }
 
-
 void computeVertexValue(string objName, std::vector<glm::vec3> particlePosList)
 {
 	int particleCount = particlePosList.size();
