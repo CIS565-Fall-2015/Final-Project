@@ -19,7 +19,7 @@ __device__ int utilhash(int a){
 
 __device__ void Perlin::init_rand(int iter, int index, int depth) {
 	int h = utilhash((1 << 31) | (depth << 22) | iter) ^ utilhash(index); 
-	u01 = thrust::uniform_real_distribution<float>(-1, 1);
+	u01 = thrust::uniform_real_distribution<float>(0, 1);
 	rng = thrust::default_random_engine(h);
 }
 
@@ -30,7 +30,7 @@ __device__ float Perlin::noise1(float arg) {
 	vec[0] = arg;
 
 	if (mStart) {
-		init_rand(mOctaves, mSeed, 0);
+		init_rand(mOctaves, mSeed, NP);
 		mStart = false;
 		init();
 	}
@@ -51,7 +51,7 @@ __device__ float Perlin::noise2(float vec[2]) {
 	int i, j;
 
 	if (mStart) {
-		init_rand(mOctaves, mSeed, 0);
+		init_rand(mOctaves, mSeed, NP);
 		mStart = false;
 		init();
 	}
@@ -93,7 +93,7 @@ __device__ float Perlin::noise3(float vec[3]) {
 	int i, j;
 
 	if (mStart) {
-		init_rand(mOctaves, mSeed, 0);
+		init_rand(mOctaves, mSeed, NP);
 		mStart = false;
 		init();
 	}

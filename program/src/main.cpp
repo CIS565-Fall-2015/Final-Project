@@ -14,8 +14,8 @@
 
 #define VISUALIZE 1
 
-unsigned int width = 128;
-unsigned int height = 72;
+unsigned int width = 67;
+unsigned int height = 45;
 unsigned int N_FOR_VIS;
 
 /**
@@ -213,15 +213,15 @@ void runCUDA() {
 
     // execute the kernel
 	MapGen(hst_height, N_FOR_VIS);
-	ofstream outfile(filepath.c_str());
+	//ofstream outfile(filepath.c_str());
 	//outfile << 1 << endl;
-	for (int i = 0; i < width; i++)
-		for (int j = 0; j < height; j++)
-			outfile /*<< i << " " */<< hst_height[i*height + j] /*<< " " << j */<< endl;
+	//for (int i = 0; i < width; i++)
+	//	for (int j = 0; j < height; j++)
+	//		outfile << i << " " << hst_height[i*height + j] << " " << j << endl;
 	//outfile << "CIS565" << endl;
-	outfile.close();
-	MCube(hst_height, width, height);
-	cout << "OVER" << endl;
+	//outfile.close();
+	//MCube(hst_height, width, height);
+	//cout << "OVER" << endl;
 #if VISUALIZE
     //Terrain::copyPlanetsToVBO(dptrvert);
 #endif
