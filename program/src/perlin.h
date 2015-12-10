@@ -17,7 +17,7 @@
 #define NM 0xfff
 
 #define s_curve(t) (t * t * (3.0f - 2.0f * t))
-#define lerp(t, a, b) (a + t * (b - a))
+#define lerrp(t, a, b) (a + t * (b - a))
 
 class Perlin {
 public:
@@ -65,5 +65,5 @@ public:
   bool mStart;
 
   thrust::default_random_engine rng;
-  thrust::uniform_real_distribution<float> unitDistrib; 
+  thrust::uniform_real_distribution<float> unitDistrib;
 };

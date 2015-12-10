@@ -16,7 +16,7 @@
 #define octaves 6
 #define amplitude 2
 #define frequency 0.125
-#define seed 1
+#define seeed 1
 
 using namespace std;
 

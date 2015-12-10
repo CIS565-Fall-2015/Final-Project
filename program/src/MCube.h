@@ -22,12 +22,3 @@ int marchingCube(double isolevel, int indexX, int indexY, int indexZ,
 void createObjFile(string name, vector<glm::vec3> pointList, vector<vector<int>> triangleList);
 glm::vec3 vertexInterp(double isolevel, glm::vec3 p1, glm::vec3 p2, double valueP1, double valueP2);
 void Level_Set_Method(string name, vector<glm::vec3> pointList, vector<vector<int>> triangleList);
-
-int largestRes = 100;//No need to change
-int maxRadius = 5;//Recommend value 2~8
-double isolevel = 0.5;//No need to change
-double dx = 0.5;//Recommend value 0.1~1.0 #The lower value, the more time is required
-double levelSetDiatance = 50;//Recommend value 10~200
-string objStorePath = "C:/Users/Zhimin/Desktop/";//Output OBJ file Path
-static int frameNumber = 1;
-bool useLevelSet = true;

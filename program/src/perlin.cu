@@ -40,7 +40,7 @@ __device__ float Perlin::noise1(float arg) {
 	u = rx0 * g1[p[bx0]];
 	v = rx1 * g1[p[bx1]];
 
-	return lerp(sx, u, v);
+	return lerrp(sx, u, v);
 }
 
 __device__ float Perlin::noise2(float vec[2]) {
@@ -74,15 +74,15 @@ __device__ float Perlin::noise2(float vec[2]) {
 	u = at2(rx0,ry0);
 	q = g2[b10];
 	v = at2(rx1,ry0);
-	a = lerp(sx, u, v);
+	a = lerrp(sx, u, v);
 
 	q = g2[b01];
 	u = at2(rx0,ry1);
 	q = g2[b11];
 	v = at2(rx1,ry1);
-	b = lerp(sx, u, v);
+	b = lerrp(sx, u, v);
 
-	return lerp(sy, a, b);
+	return lerrp(sy, a, b);
 }
 
 __device__ float Perlin::noise3(float vec[3]) {
@@ -116,25 +116,25 @@ __device__ float Perlin::noise3(float vec[3]) {
 
 	q = g3[b00 + bz0] ; u = at3(rx0,ry0,rz0);
 	q = g3[b10 + bz0] ; v = at3(rx1,ry0,rz0);
-	a = lerp(t, u, v);
+	a = lerrp(t, u, v);
 
 	q = g3[b01 + bz0] ; u = at3(rx0,ry1,rz0);
 	q = g3[b11 + bz0] ; v = at3(rx1,ry1,rz0);
-	b = lerp(t, u, v);
+	b = lerrp(t, u, v);
 
-	c = lerp(sy, a, b);
+	c = lerrp(sy, a, b);
 
 	q = g3[b00 + bz1] ; u = at3(rx0,ry0,rz1);
 	q = g3[b10 + bz1] ; v = at3(rx1,ry0,rz1);
-	a = lerp(t, u, v);
+	a = lerrp(t, u, v);
 
 	q = g3[b01 + bz1] ; u = at3(rx0,ry1,rz1);
 	q = g3[b11 + bz1] ; v = at3(rx1,ry1,rz1);
-	b = lerp(t, u, v);
+	b = lerrp(t, u, v);
 
-	d = lerp(sy, a, b);
+	d = lerrp(sy, a, b);
 
-	return lerp(sz, c, d);
+	return lerrp(sz, c, d);
 }
 
 __device__ void Perlin::normalize2(float v[2]) {

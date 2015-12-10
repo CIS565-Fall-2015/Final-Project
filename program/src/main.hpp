@@ -50,19 +50,14 @@ static std::string startTimeString;
 static bool camchanged = false;
 static float theta = 0, phi = 0;
 static glm::vec3 cammove;
-
-//extern Scene *scene;
 RenderState *renderState;
-//extern int iteration;
-//
-//extern int width;
-//extern int height;
 
 //====================================
 // Main
 //====================================
 
 const char *projectName;
+const string filepath("C:/Users/Zhimin/Desktop/zzm.txt");
 
 int main(int argc, char* argv[]);
 

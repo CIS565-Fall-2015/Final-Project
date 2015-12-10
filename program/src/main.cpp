@@ -213,8 +213,18 @@ void runCUDA() {
 
     // execute the kernel
 	MapGen(hst_height, N_FOR_VIS);
-	//MCube(hst_height, width, height);
-
+	//ofstream outfile(filepath.c_str());
+	//outfile << 1 << endl;
+	//for (int i = 0; i < width; i++)
+	//	for (int j = 0; j < height; j++){
+	//	int index = i*height + j;
+	//	//hst_height[index] += height*perl.Get(i, j);
+	//	outfile << i << " " << hst_height[index] << " " << j << endl;
+	//	}
+	//outfile << "CIS565" << endl;
+	//outfile.close();
+	MCube(hst_height, width, height);
+	cout << "OVER" << endl;
 #if VISUALIZE
     //Terrain::copyPlanetsToVBO(dptrvert);
 #endif
@@ -239,7 +249,7 @@ void mainLoop() {
             frame = 0;
         }
 
-		runCUDA();
+		//runCUDA();
 
         std::ostringstream ss;
         ss << "[";
@@ -287,7 +297,7 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 		case GLFW_KEY_S:     camchanged = true; cammove -= glm::vec3(0, 0, .1f); break;
 		case GLFW_KEY_R:     camchanged = true; cammove += glm::vec3(0, .1f, 0); break;
 		case GLFW_KEY_F:     camchanged = true; cammove -= glm::vec3(0, .1f, 0); break;
-		//case GLFW_KEY_L:     runCUDA();	/*initVAO();*/ break;
+		case GLFW_KEY_L:     runCUDA();	/*initVAO();*/ break;
 		}
 	}
 }

@@ -1,14 +1,23 @@
 #include "MCube.h"
 
+int largestRes = 100;//No need to change
+int maxRadius = 5;//Recommend value 2~8
+double isolevel = 0.5;//No need to change
+double dx = 0.5;//Recommend value 0.1~1.0 #The lower value, the more time is required
+double levelSetDiatance = 50;//Recommend value 10~200
+string objStorePath = "C:/Users/Zhimin/Desktop/";//Output OBJ file Path
+static int frameNumber = 1;
+bool useLevelSet = true;
+
 void MCube(float *height, int width, int length)
 {
 	string objName;
 	std::stringstream strout;
 	std::vector<glm::vec3> particlePosList;
-	
+
 	for (int i = 0; i < width; i++)
 		for (int j = 0; j < length; j++)
-			particlePosList.push_back(glm::vec3(i, j, height[i*length + j]));
+			particlePosList.push_back(glm::vec3(i, height[i*length + j], j));
 
 	strout << "terrain_" << frameNumber << ".obj";
 	strout >> objName;
@@ -60,12 +69,12 @@ void computeVertexValue(string objName, std::vector<glm::vec3> particlePosList)
 		}
 	}
 
-
 	double diffX = maxXPos - minXPos;
 	double diffY = maxYPos - minYPos;
 	double diffZ = maxZPos - minZPos;
 	double diff = diffX;
 	int largestIndex = 0;
+
 	if (diffY > diff)
 	{
 		diff = diffY;
@@ -103,15 +112,10 @@ void computeVertexValue(string objName, std::vector<glm::vec3> particlePosList)
 
 	int verticesCount = (meshResX + 1) * (meshResY + 1) * (meshResZ + 1);
 	glm::vec3 originPos(minXPos - maxRadius * meshSize, minYPos - maxRadius * meshSize, minZPos - maxRadius * meshSize);
-
-
 	double* verticesValueArray = new double[verticesCount];
 
 	for (int i = 0; i < verticesCount; i++)
-	{
 		verticesValueArray[i] = 0;
-	}
-
 
 	for (int i = 0; i < particleCount; i++)
 	{
@@ -158,18 +162,15 @@ void computeVertexValue(string objName, std::vector<glm::vec3> particlePosList)
 	for (int k = 0; k < meshResZ; k++)
 		for (int j = 0; j < meshResY; j++)
 			for (int i = 0; i < meshResX; i++)
-			{
-		marchingCube(isolevel, i, j, k,
-			meshResX, meshResY, meshResZ, meshSize,
-			verticesValueArray, originPos,
-			&pointList, &triangleList, &temp);
-			}
+				marchingCube(isolevel, i, j, k,
+				meshResX, meshResY, meshResZ, meshSize,
+				verticesValueArray, originPos,
+				&pointList, &triangleList, &temp);
 
 	if (useLevelSet)
 		Level_Set_Method(objName, pointList, triangleList);
 	else
 		createObjFile(objName, pointList, triangleList);
-
 }
 
 void Level_Set_Method(string name, vector<glm::vec3> pointList, vector<vector<int>> triangleList)
@@ -183,9 +184,8 @@ void Level_Set_Method(string name, vector<glm::vec3> pointList, vector<vector<in
 	//Create Face List//
 	////////////////////
 	for (unsigned int i = 0; i < triangleList.size(); i++)
-	{
 		faceList.push_back(Vec3ui(triangleList[i][0] - 1, triangleList[i][1] - 1, triangleList[i][2] - 1));
-	}
+
 	////////////////////////
 	//Create Vertices List//
 	////////////////////////
@@ -198,7 +198,7 @@ void Level_Set_Method(string name, vector<glm::vec3> pointList, vector<vector<in
 		vertList.push_back(point);
 		update_minmax(point, min_box, max_box);
 	}
-	
+
 	double sizeX = max_box[0] - min_box[0];
 	double sizeY = max_box[1] - min_box[1];
 	double sizeZ = max_box[2] - min_box[2];
@@ -208,19 +208,15 @@ void Level_Set_Method(string name, vector<glm::vec3> pointList, vector<vector<in
 	if (sizeZ > maxSideLength)
 		maxSideLength = sizeZ;
 	double totalSize = sizeX * sizeY * sizeZ;
-	//double cubicSize = totalSize/ cubicNum;
-	//double dx = pow(cubicSize, (double)(1.0f/ 3.0f));
 
 	////Add padding around the box.////
 	Vec3f unit(dx, dx, dx);
 	min_box -= (float)0.001 * unit;
 	max_box += (float)0.001 * unit;
 	Vec3ui sizes = Vec3ui((max_box - min_box) / dx) + Vec3ui(2, 2, 2);
+	vector<double> phiValue;
 	Array3f phi_grid;
 
-
-
-	vector<double> phiValue;
 	///////////////////////////////////
 	//Use level set method to compute//
 	///////////////////////////////////
@@ -234,31 +230,21 @@ void Level_Set_Method(string name, vector<glm::vec3> pointList, vector<vector<in
 	double meltingThickness = maxSideLength / levelSetDiatance;
 
 	for (unsigned int i = 0; i < phi_grid.a.size(); i++)
-	{
 		verticesValueArray[i] = -phi_grid.a[i];
-	}
+
 	/////////////////////////////////////////////////////////////////////////////////
 	//From returning distance function with marching cube method to create new mesh//
 	/////////////////////////////////////////////////////////////////////////////////
 	for (unsigned int z = 0; z < sizes[2] - 1; z++)
-	{
-		//cout << "z = " << z <<endl;
 		for (unsigned int y = 0; y < sizes[1] - 1; y++)
-		{
 			for (unsigned int x = 0; x < sizes[0] - 1; x++)
-			{
-				marchingCube(meltingThickness, x, y, z,//meltingThickness
-					sizes[0] - 1, sizes[1] - 1, sizes[2] - 1, dx,
-					verticesValueArray, originPos,
-					&marchingCubePointList,
-					&newTriangleList,
-					&temp);
-			}
-		}
-	}
+				marchingCube(meltingThickness, x, y, z,
+				sizes[0] - 1, sizes[1] - 1, sizes[2] - 1, dx,
+				verticesValueArray, originPos,
+				&marchingCubePointList,
+				&newTriangleList, &temp);
 
 	createObjFile(name, marchingCubePointList, newTriangleList);
-
 }
 
 int marchingCube(double isolevel, int indexX, int indexY, int indexZ,
@@ -268,7 +254,6 @@ int marchingCube(double isolevel, int indexX, int indexY, int indexZ,
 	vector<vector<int>> *triangleList,
 	vector<vector<int>> *temp)
 {
-
 	int gridValueIndex0 = indexZ * (meshResX + 1) * (meshResY + 1) + indexY * (meshResX + 1) + indexX;
 	int gridValueIndex1 = indexZ * (meshResX + 1) * (meshResY + 1) + indexY * (meshResX + 1) + indexX + 1;
 	int gridValueIndex2 = indexZ * (meshResX + 1) * (meshResY + 1) + (indexY + 1) * (meshResX + 1) + indexX + 1;
@@ -296,8 +281,6 @@ int marchingCube(double isolevel, int indexX, int indexY, int indexZ,
 	glm::vec3 gridPos5((indexX + 1) * meshSize + originPos[0], indexY       * meshSize + originPos[1], (indexZ + 1) * meshSize + originPos[2]);
 	glm::vec3 gridPos6((indexX + 1) * meshSize + originPos[0], (indexY + 1) * meshSize + originPos[1], (indexZ + 1) * meshSize + originPos[2]);
 	glm::vec3 gridPos7(indexX       * meshSize + originPos[0], (indexY + 1) * meshSize + originPos[1], (indexZ + 1) * meshSize + originPos[2]);
-
-
 
 #pragma region list
 
@@ -334,7 +317,6 @@ int marchingCube(double isolevel, int indexX, int indexY, int indexZ,
 		0x69c, 0x795, 0x49f, 0x596, 0x29a, 0x393, 0x99, 0x190,
 		0xf00, 0xe09, 0xd03, 0xc0a, 0xb06, 0xa0f, 0x905, 0x80c,
 		0x70c, 0x605, 0x50f, 0x406, 0x30a, 0x203, 0x109, 0x0 };
-
 
 	int triTable[256][16] =
 	{ { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
@@ -593,11 +575,10 @@ int marchingCube(double isolevel, int indexX, int indexY, int indexZ,
 	{ 0, 9, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
 	{ 0, 3, 8, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
 	{ -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 } };
+
 #pragma endregion
-	/*
-	Determine the index into the edge table which
-	tells us which vertices are inside of the surface
-	*/
+	/*Determine the index into the edge table which
+	tells us which vertices are inside of the surface*/
 	int cubeindex = 0;
 	if (gridValue0 > isolevel) cubeindex |= 1;
 	if (gridValue1 > isolevel) cubeindex |= 2;
@@ -900,6 +881,7 @@ int marchingCube(double isolevel, int indexX, int indexY, int indexZ,
 		pointList_eachgrid.push_back(-1);
 
 	temp->push_back(pointList_eachgrid);
+
 #pragma endregion
 
 	/* Create the triangle */
@@ -910,7 +892,6 @@ int marchingCube(double isolevel, int indexX, int indexY, int indexZ,
 		triangle.push_back(edge[triTable[cubeindex][i]]);
 		triangle.push_back(edge[triTable[cubeindex][i + 1]]);
 		triangle.push_back(edge[triTable[cubeindex][i + 2]]);
-
 		triangleList->push_back(triangle);
 	}
 
@@ -921,9 +902,8 @@ int marchingCube(double isolevel, int indexX, int indexY, int indexZ,
 
 glm::vec3 vertexInterp(double isolevel, glm::vec3 p1, glm::vec3 p2, double valueP1, double valueP2)
 {
-	glm::vec3 interPt;
-
 	double mu;
+	glm::vec3 interPt;
 
 	if (abs(isolevel - valueP1) < 0.00001)
 		return(p1);
@@ -937,7 +917,6 @@ glm::vec3 vertexInterp(double isolevel, glm::vec3 p1, glm::vec3 p2, double value
 	interPt[2] = p1[2] + mu * (p2[2] - p1[2]);
 
 	return interPt;
-
 }
 
 void createObjFile(string name, vector<glm::vec3> pointList, vector<vector<int>> triangleList)

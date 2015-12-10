@@ -1,20 +1,6 @@
 #define GLM_FORCE_CUDA
 #include "kernel.h"
 
-#define checkCUDAErrorWithLine(msg) checkCUDAError(msg, __LINE__)
-
-/* Check for CUDA errors; print and exit if there was a problem.*/
-void checkCUDAError(const char *msg, int line = -1) {
-	cudaError_t err = cudaGetLastError();
-	if (cudaSuccess != err) {
-		if (line >= 0) {
-			fprintf(stderr, "Line %d: ", line);
-		}
-		fprintf(stderr, "Cuda error: %s: %s.\n", msg, cudaGetErrorString(err));
-		exit(EXIT_FAILURE);
-	}
-}
-
 //__global__ void kernCopyPlanetsToVBO(int N, glm::vec3 *pos, float *vbo, float s_scale) {
 //    int index = threadIdx.x + (blockIdx.x * blockDim.x);
 //
@@ -42,7 +28,7 @@ __global__ void HeightMapping(float *height, unsigned int numPixels)
 	unsigned int i = blockIdx.x, j = threadIdx.x;
 	unsigned int index = i * blockDim.x + j;
 
-	int octaves_ = octaves, seed_ = seed;
+	int octaves_ = octaves, seed_ = seeed;
 	float amp_ = amplitude, freq_ = frequency;
 
 	if (index < numPixels){

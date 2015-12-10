@@ -13,6 +13,8 @@ set(SOURCE_FILES
 	"MCube.cpp"
 	"makelevelset3.h"
 	"makelevelset3.cpp"
+	"util.h"
+	"vecL.h"
     )
 
 cuda_add_library(src
