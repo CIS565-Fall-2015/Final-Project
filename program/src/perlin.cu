@@ -7,18 +7,20 @@
 	r0 = t - (int)t;\
 	r1 = r0 - 1.0f;
 
-#define hash(a)\
-	a = (a + 0x7ed55d16) + (a << 12);\
-	a = (a ^ 0xc761c23c) ^ (a >> 19);\
-	a = (a + 0x165667b1) + (a << 5);\
-	a = (a + 0xd3a2646c) ^ (a << 9);\
-	a = (a + 0xfd7046c5) + (a << 3);\
+__device__ int utilhash(int a){
+	a = (a + 0x7ed55d16) + (a << 12);
+	a = (a ^ 0xc761c23c) ^ (a >> 19);
+	a = (a + 0x165667b1) + (a << 5);
+	a = (a + 0xd3a2646c) ^ (a << 9);
+	a = (a + 0xfd7046c5) + (a << 3);
 	a = (a ^ 0xb55a4f09) ^ (a >> 16);
+	return a;
+}
 
-__device__ void Perlin::init_rand(int seed) {
-	hash(seed);
-	rng = thrust::default_random_engine(float(seed));
-	unitDistrib = thrust::uniform_real_distribution<float>(0, 1);
+__device__ void Perlin::init_rand(int iter, int index, int depth) {
+	int h = utilhash((1 << 31) | (depth << 22) | iter) ^ utilhash(index); 
+	u01 = thrust::uniform_real_distribution<float>(-1, 1);
+	rng = thrust::default_random_engine(h);
 }
 
 __device__ float Perlin::noise1(float arg) {
@@ -28,7 +30,7 @@ __device__ float Perlin::noise1(float arg) {
 	vec[0] = arg;
 
 	if (mStart) {
-		init_rand(mSeed);
+		init_rand(mOctaves, mSeed, 0);
 		mStart = false;
 		init();
 	}
@@ -49,7 +51,7 @@ __device__ float Perlin::noise2(float vec[2]) {
 	int i, j;
 
 	if (mStart) {
-		init_rand(mSeed);
+		init_rand(mOctaves, mSeed, 0);
 		mStart = false;
 		init();
 	}
@@ -91,7 +93,7 @@ __device__ float Perlin::noise3(float vec[3]) {
 	int i, j;
 
 	if (mStart) {
-		init_rand(mSeed);
+		init_rand(mOctaves, mSeed, 0);
 		mStart = false;
 		init();
 	}
@@ -162,20 +164,20 @@ __device__ void Perlin::init(void) {
 
 	for (i = 0 ; i < B ; i++) {
 		p[i] = i;
-		g1[i] = (float)((int(unitDistrib(rng)*(float)RAND_MAX) % (B + B)) - B) / B;
+		g1[i] = (float)((int(u01(rng)*(float)RAND_MAX) % (B + B)) - B) / B;
 		for (j = 0 ; j < 2 ; j++) {
-			g2[i][j] = (float)((int(unitDistrib(rng)*(float)RAND_MAX) % (B + B)) - B) / B;
+			g2[i][j] = (float)((int(u01(rng)*(float)RAND_MAX) % (B + B)) - B) / B;
 		}
 		normalize2(g2[i]);
 		for (j = 0 ; j < 3 ; j++) {
-			g3[i][j] = (float)((int(unitDistrib(rng)*(float)RAND_MAX) % (B + B)) - B) / B;
+			g3[i][j] = (float)((int(u01(rng)*(float)RAND_MAX) % (B + B)) - B) / B;
 		}
 		normalize3(g3[i]);
 	}
 
 	while (--i) {
 		k = p[i];
-		p[i] = p[j = int(unitDistrib(rng)*(float)RAND_MAX) % B];
+		p[i] = p[j = int(u01(rng)*(float)RAND_MAX) % B];
 		p[j] = k;
 	}
 

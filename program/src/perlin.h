@@ -41,17 +41,18 @@ public:
 	  return perlin_noise_3D(vec);
   }
 
-  __device__ void init_perlin(int n, float p);
-  __device__ float perlin_noise_2D(float vec[2]);
-  __device__ float perlin_noise_3D(float vec[3]);
+  __device__ void init(void);
+  __device__ void init_rand(int iter, int index, int depth);
 
   __device__ float noise1(float arg);
   __device__ float noise2(float vec[2]);
   __device__ float noise3(float vec[3]);
+
   __device__ void normalize2(float v[2]);
   __device__ void normalize3(float v[3]);
-  __device__ void init_rand(int seed);
-  __device__ void init(void);
+
+  __device__ float perlin_noise_2D(float vec[2]);
+  __device__ float perlin_noise_3D(float vec[3]);
 
   int mOctaves;
   float mFrequency;
@@ -65,5 +66,5 @@ public:
   bool mStart;
 
   thrust::default_random_engine rng;
-  thrust::uniform_real_distribution<float> unitDistrib;
+  thrust::uniform_real_distribution<float> u01;
 };

@@ -213,16 +213,13 @@ void runCUDA() {
 
     // execute the kernel
 	MapGen(hst_height, N_FOR_VIS);
-	//ofstream outfile(filepath.c_str());
+	ofstream outfile(filepath.c_str());
 	//outfile << 1 << endl;
-	//for (int i = 0; i < width; i++)
-	//	for (int j = 0; j < height; j++){
-	//	int index = i*height + j;
-	//	//hst_height[index] += height*perl.Get(i, j);
-	//	outfile << i << " " << hst_height[index] << " " << j << endl;
-	//	}
+	for (int i = 0; i < width; i++)
+		for (int j = 0; j < height; j++)
+			outfile /*<< i << " " */<< hst_height[i*height + j] /*<< " " << j */<< endl;
 	//outfile << "CIS565" << endl;
-	//outfile.close();
+	outfile.close();
 	MCube(hst_height, width, height);
 	cout << "OVER" << endl;
 #if VISUALIZE
